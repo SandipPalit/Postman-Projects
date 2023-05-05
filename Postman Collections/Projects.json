@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "e39122f8-d685-4d20-bc1f-9134ede1ea25",
+		"name": "Projects",
+		"description": "This Collection contains all my Projects.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Data Validation",
+			"item": [
+				{
+					"name": "TMDB",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "09b4f65e-162f-465d-b048-d810e4bb8b0c",
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Records Count: \"  + pm.response.json().results.length, function () {\r",
+									"    pm.expect(pm.response.json().results.length).to.gt(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Schema Validation\", () => {\r",
+									"    _.each(pm.response.json().results, (item) => { \r",
+									"        pm.expect(typeof item[\"adult\"]).to.be.oneOf(['boolean']);\r",
+									"        pm.expect(typeof item[\"backdrop_path\"]).to.be.oneOf(['string']);\r",
+									"        pm.expect(typeof item[\"genre_ids\"]).to.be.oneOf(['object','number']);\r",
+									"        pm.expect(typeof item[\"id\"]).to.be.oneOf(['number']);\r",
+									"        pm.expect(typeof item[\"original_language\"]).to.be.oneOf(['string']);\r",
+									"        pm.expect(typeof item[\"original_title\"]).to.be.oneOf(['string']);\r",
+									"        pm.expect(typeof item[\"overview\"]).to.be.oneOf(['string']);\r",
+									"        pm.expect(typeof item[\"popularity\"]).to.be.oneOf(['number']);\r",
+									"        pm.expect(typeof item[\"poster_path\"]).to.be.oneOf(['string']);\r",
+									"        pm.expect(typeof item[\"release_date\"]).to.be.oneOf(['string']);\r",
+									"        pm.expect(typeof item[\"title\"]).to.be.oneOf(['string']);\r",
+									"        pm.expect(typeof item[\"video\"]).to.be.oneOf(['boolean']);\r",
+									"        pm.expect(typeof item[\"vote_average\"]).to.be.oneOf(['number']);\r",
+									"        pm.expect(typeof item[\"vote_count\"]).to.be.oneOf(['number']);\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Null Check\", () => {\r",
+									"    _.each(pm.response.json().results, (item) => { \r",
+									"        pm.expect(item[\"id\"]).is.not.oneOf([null, undefined]);\r",
+									"        pm.expect(item[\"title\"]).is.not.oneOf([null, undefined]);\r",
+									"        pm.expect(item[\"original_title\"]).is.not.oneOf([null, undefined]);\r",
+									"        pm.expect(item[\"overview\"]).is.not.oneOf([null, undefined]);\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Duplicate Check\", () => {\r",
+									"    pm.expect(new Set(pm.response.json().results).size).to.equal(pm.response.json().results.length);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data Validation\", () => {\r",
+									"    _.each(pm.response.json().results, (item) => { \r",
+									"        pm.expect(item.vote_average).to.be.within(0,10);\r",
+									"        pm.expect(item.vote_count).to.gt(0);\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "38021d39-7373-4e6e-823c-b2cf8078bd2f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.themoviedb.org/3/movie/top_rated?api_key={{TMDB-API-KEY}}&language=en-US",
+							"protocol": "https",
+							"host": [
+								"api",
+								"themoviedb",
+								"org"
+							],
+							"path": [
+								"3",
+								"movie",
+								"top_rated"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{TMDB-API-KEY}}"
+								},
+								{
+									"key": "language",
+									"value": "en-US"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"_postman_id": "97d44aea-283b-4fab-96dd-25a352ea11ad"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0cdfc2a9-4ae0-4a6f-800e-6086b0f9f2d2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "bd856b0c-104e-48d1-8e8f-59e8a94b29dc",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "58cedc04-3db9-4c01-ae12-77e3b16da0bd",
+			"key": "TMDB-API-KEY",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
